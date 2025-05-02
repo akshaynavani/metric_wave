@@ -10,6 +10,7 @@ from django.db.models import Avg, Count, Max, Min, Sum
 from django.utils import timezone
 
 from . import cache as metric_cache
+from .broadcast import broadcast_points
 from .models import MetricPoint, Source
 
 AGGREGATES = {"avg": Avg, "sum": Sum, "min": Min, "max": Max, "count": Count}
@@ -161,8 +162,7 @@ def ingest_points(source: Source, points: Iterable[dict[str, Any]]) -> list[Metr
     with transaction.atomic():
         created = MetricPoint.objects.bulk_create(objects)
         touched = {(source.pk, obj.name) for obj in created}
-        new_names = {name for _, name in touched}
-        transaction.on_commit(lambda: _after_ingest(source, created, touched, new_names))
+        transaction.on_commit(lambda: _after_ingest(source, created, touched))
     return created
 
 
@@ -170,9 +170,9 @@ def _after_ingest(
     source: Source,
     created: list[MetricPoint],
     touched: set[tuple[int, str]],
-    new_names: set[str],
 ) -> None:
     metric_cache.invalidate(touched)
     # The metric name list only changes when a never-seen name arrives; bumping its
     # version unconditionally is cheap and keeps the logic simple.
     metric_cache.bump_version(source.pk, "*")
+    broadcast_points(source.slug, created)
