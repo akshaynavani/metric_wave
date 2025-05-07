@@ -1,0 +1,15 @@
+[run]
+source = metrics, config
+branch = true
+omit =
+    */migrations/*
+    config/asgi.py
+    config/wsgi.py
+    config/settings_test.py
+
+[report]
+show_missing = true
+skip_covered = true
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
