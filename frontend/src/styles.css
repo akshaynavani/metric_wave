@@ -1,0 +1,63 @@
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --border: #e3e6eb;
+  --grid: #eef0f3;
+  --text: #1b1f24;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --ok: #16a34a;
+  --warn: #d97706;
+  --bad: #dc2626;
+  color-scheme: light dark;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1115;
+    --surface: #171a21;
+    --border: #262a33;
+    --grid: #20242c;
+    --text: #e6e8eb;
+    --muted: #9aa1ac;
+    --accent: #60a5fa;
+  }
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); }
+a { color: inherit; text-decoration: none; }
+code { background: var(--grid); padding: 0 4px; border-radius: 4px; }
+
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 24px; background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.brand { font-weight: 700; letter-spacing: 0.02em; }
+.container { max-width: 1280px; margin: 0 auto; padding: 24px 16px; }
+.page-title h2 { margin: 8px 0 4px; }
+.muted { color: var(--muted); }
+.error { color: var(--bad); }
+
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge-open .dot { background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 25%, transparent); }
+.badge-connecting .dot { background: var(--warn); }
+.badge-closed .dot { background: var(--bad); }
+
+.dashboard-list { list-style: none; padding: 0; display: grid; gap: 12px; }
+.dashboard-list a {
+  display: flex; flex-direction: column; gap: 4px; padding: 16px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+}
+.dashboard-list a:hover { border-color: var(--accent); }
+
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); margin-top: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; min-width: 0; }
+.card-header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+.card-header h3 { margin: 0; font-size: 15px; }
+.card-meta { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.stat-value { font-size: 40px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat-caption { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
