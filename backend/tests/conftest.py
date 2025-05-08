@@ -19,7 +19,7 @@ def source(db) -> Source:
 
 
 @pytest.fixture
-def client() -> APIClient:
+def api_client() -> APIClient:
     return APIClient()
 
 
