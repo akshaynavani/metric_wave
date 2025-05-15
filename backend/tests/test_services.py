@@ -66,8 +66,11 @@ def test_series_is_cached_until_ingest(seeded, django_capture_on_commit_callback
     assert updated[-1]["count"] == first[-1]["count"] + 1
 
 
-def test_summary_reports_stats_and_latest(source):
+def test_summary_reports_stats_and_latest(source, monkeypatch):
     from django.utils import timezone as dj_tz
+
+    # Pin the cache slot so the test cannot straddle a 5s boundary.
+    monkeypatch.setattr(services, "floor_time", lambda moment, seconds: NOW)
 
     now = dj_tz.now()
     add(source, "cpu", 1, now - timedelta(minutes=1))
