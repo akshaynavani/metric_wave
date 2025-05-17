@@ -8,3 +8,4 @@ django-redis==5.4.0
 redis==5.0.4
 psycopg[binary]==3.1.19
 dj-database-url==2.1.0
+whitenoise==6.6.0
